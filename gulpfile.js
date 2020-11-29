@@ -4,7 +4,11 @@ const gulp = require("gulp");
 const webpack = require("webpack-stream");
 const browsersync = require("browser-sync");
 
-const dist = "./dist/";
+let dist = './dist'
+
+gulp.task("setPath", () => {
+  dist = "C:/OpenServer/domains/coursejs";
+});
 
 gulp.task("copy-html", () => {
     return gulp.src("./src/index.html")
@@ -92,4 +96,5 @@ gulp.task("build-prod-js", () => {
                 .pipe(gulp.dest(dist));
 });
 
+gulp.task("server", gulp.parallel("setPath", "watch", "build"));
 gulp.task("default", gulp.parallel("watch", "build"));
