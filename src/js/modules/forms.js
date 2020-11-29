@@ -1,4 +1,6 @@
-const forms  = () => {
+import checkNumber from "./checkNumber"
+
+const forms  = (state) => {
   const form = document.querySelectorAll('form'),
         inputs = document.querySelectorAll('input')
 
@@ -7,6 +9,8 @@ const forms  = () => {
     success: 'Спасибо! С вами скоро свяжутся.',
     error: 'Что-то пошло не так ...'
   }
+
+  checkNumber('input[name="user_phone"]')
 
   const sendPost = async (url, params) => {
     document.querySelector('.status').textContent = messages.loading
@@ -30,9 +34,14 @@ const forms  = () => {
 
       let statusMessage = document.createElement('div')
       statusMessage.classList.add('status')
-      form.appendChild(statusMessage)
+      item.appendChild(statusMessage)
 
       const formData = new FormData(item)
+      if(item.getAttribute('data-calc') === 'end') {
+        for (let key in state) {
+          formData.append(key, state[key])
+        }
+      }
       
       sendPost('assets/server.php', formData)
         .then(resp => {
